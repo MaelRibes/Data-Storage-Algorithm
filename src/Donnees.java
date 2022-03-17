@@ -23,4 +23,12 @@ public class Donnees {
     public static int getIdDonnes() {
         return idDonnes;
     }
+
+    @Override
+    public String toString() {
+        return "Donnees{" +
+                "idD=" + idD +
+                ", taille=" + taille +
+                '}';
+    }
 }

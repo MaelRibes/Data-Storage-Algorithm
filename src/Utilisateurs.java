@@ -35,40 +35,21 @@ public class Utilisateurs {
 
     public NoeudsSysteme meilleurEmplacement(@NotNull Donnees donnees){
         if (noeudAccessible.getCapaMemoire() > donnees.getTaille()){
-            System.out.println("Le meilleur emplacement de "+ donn);
+            System.out.println("Le meilleur emplacement de la donnée " + donnees.getIdD() +" est :");
             System.out.println(noeudAccessible);
             return noeudAccessible;
         }
         else {
-            for (NoeudsSysteme noeud : noeudAccessible.getNoeudsAccessibles()){
-                if (noeud.getCapaMemoire() > donnees.getTaille()){
-                    System.out.println(noeud);
+            for (NoeudsSysteme noeud : noeudAccessible.getNoeudsAccessibles()) {
+                if (noeud.getCapaMemoire() > donnees.getTaille()) {
+                    System.out.println("Le meilleur emplacement de la donnée " + donnees.getIdD() + " est :");
+                    System.out.println(noeudAccessible);
                     return noeud;
                 }
+            }
         }
+        return null;
     }
 
-    public void ajoutDonnees(){
-        for (Donnees donnees : donnesInteret){
-            boolean commu = true;
-            if (noeudAccessible.getCapaMemoire() > donnees.getTaille()){
-                noeudAccessible.getDonnesStockees().add(donnees);
-                noeudAccessible.setCapaMemoire(noeudAccessible.getCapaMemoire() - donnees.getTaille());
-                commu = false;
-            }
-            else {
-                for (NoeudsSysteme noeud : noeudAccessible.getNoeudsAccessibles()){
-                    if (noeud.getCapaMemoire() > donnees.getTaille() && commu){
-                        noeud.getDonnesStockees().add(donnees);
-                        noeud.setCapaMemoire(noeud.getCapaMemoire() - donnees.getTaille());
-                        commu = false;
-                    }
-                }
-            }
-            if (commu){
-                System.out.println("Pas assez d'espace dans le système pour stocker la donnée "+ donnees.getIdD());
-            }
-            
-        }
-    }
+
 }
