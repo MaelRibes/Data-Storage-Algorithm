@@ -18,13 +18,17 @@ public class NoeudsSysteme {
         this.idN = idNoeuds;
         idNoeuds++;
     }
+    public NoeudsSysteme(int capaMemoire) {
+        this.capaMemoire = capaMemoire;
+        this.idN = idNoeuds;
+        idNoeuds++;
+    }
 
     // Getter
     public int getIdN() {
         return idN;
     }
-    // Return the number of nodes created
-    public static int getIdNoeuds() {
+    public static int getIdNoeuds(){ // Return the number of nodes created
         return idNoeuds;
     }
     public int getCapaMemoire() {
@@ -45,11 +49,44 @@ public class NoeudsSysteme {
         this.capaMemoire = capaMemoire;
     }
 
-    public void ajoutDonnees(Donnees donnees){
+    // List Management
+    public void ajoutDonneesStockage(Donnees donnees){
         if (this.getCapaMemoire() > donnees.getTaille()){
             this.getDonnesStockees().add(donnees);
             this.setCapaMemoire(this.getCapaMemoire() - donnees.getTaille());
         }
     }
+    public void ajoutNoeudAccessible(NoeudsSysteme noeud){
+        this.noeudsAccessibles.add(noeud);
+        noeud.noeudsAccessibles.add(this);
+    }
+    public void ajoutUtilisateurAccessible(Utilisateurs user){
+        this.utilisateursAccessibles.add(user);
+    }
+    public void retraitNoeudAccessible(NoeudsSysteme noeud){
+        this.noeudsAccessibles.remove(noeud);
+        noeud.noeudsAccessibles.remove(this);
+    }
+    public void retraitUtilisateurAccessible(Utilisateurs user){
+        this.utilisateursAccessibles.remove(user);
+    }
 
+    @Override
+    public String toString() {
+        ArrayList<Integer> nAcces = new ArrayList<Integer>();
+        for (NoeudsSysteme noeud : noeudsAccessibles){
+            nAcces.add(noeud.getIdN());
+        }
+        ArrayList<Integer> uAcces = new ArrayList<Integer>();
+        for (Utilisateurs user : utilisateursAccessibles){
+            uAcces.add(user.getIdU());
+        }
+        return "NoeudsSysteme{" +
+                "idN=" + idN +
+                ", capaMemoire=" + capaMemoire +
+                ", donnesStockees=" + donnesStockees +
+                ", noeudsAccessibles=" + nAcces +
+                ", utilisateursAccessibles=" + uAcces +
+                '}';
+    }
 }

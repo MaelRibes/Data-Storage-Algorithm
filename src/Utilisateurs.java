@@ -16,13 +16,17 @@ public class Utilisateurs {
         this.idU = idUtilisateurs;
         idUtilisateurs++;
     }
+    public Utilisateurs(NoeudsSysteme noeudAccessible) {
+        this.noeudAccessible = noeudAccessible;
+        this.idU = idUtilisateurs;
+        idUtilisateurs++;
+    }
 
     // Getter
     public int getIdU() {
         return idU;
     }
-    // Return the number of utilisators created
-    public static int getIdUtilisateurs() {
+    public static int getIdUtilisateurs() { // Return the number of utilisators created
         return idUtilisateurs;
     }
     public ArrayList<Donnees> getDonnesInteret() {
@@ -32,24 +36,43 @@ public class Utilisateurs {
         return noeudAccessible;
     }
 
+    @Override
+    public String toString() {
+        return "Utilisateurs{" +
+                "idU=" + idU +
+                ", donnesInteret=" + donnesInteret +
+                ", noeudAccessible=" + noeudAccessible.getIdN() +
+                '}';
+    }
 
     public NoeudsSysteme meilleurEmplacement(@NotNull Donnees donnees){
         if (noeudAccessible.getCapaMemoire() > donnees.getTaille()){
-            System.out.println("Le meilleur emplacement de la donnée " + donnees.getIdD() +" est :");
-            System.out.println(noeudAccessible);
+            System.out.println("Le meilleur emplacement de la donnée " + donnees.getIdD() +" est le noeud " + noeudAccessible.getIdN());
             return noeudAccessible;
         }
         else {
             for (NoeudsSysteme noeud : noeudAccessible.getNoeudsAccessibles()) {
                 if (noeud.getCapaMemoire() > donnees.getTaille()) {
-                    System.out.println("Le meilleur emplacement de la donnée " + donnees.getIdD() + " est :");
-                    System.out.println(noeudAccessible);
+                    System.out.println("Le meilleur emplacement de la donnée " + donnees.getIdD() + " est le noeud " + noeud.getIdN());
                     return noeud;
                 }
             }
         }
         return null;
     }
+
+    public void ajoutDonneesInteretToStockage(){
+        for (Donnees donnees : donnesInteret){
+            NoeudsSysteme meilleurEmplacement;
+            meilleurEmplacement = this.meilleurEmplacement(donnees);
+            meilleurEmplacement.ajoutDonneesStockage(donnees);
+        }
+    }
+
+    public void ajoutDonneesInteret(Donnees donnees){
+        this.donnesInteret.add(donnees);
+    }
+
 
 
 }

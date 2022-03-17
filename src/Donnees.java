@@ -19,8 +19,7 @@ public class Donnees {
     public int getTaille() {
         return taille;
     }
-    // Return the number of data created
-    public static int getIdDonnes() {
+    public static int getIdDonnes() { // Return the number of data created
         return idDonnes;
     }
 
