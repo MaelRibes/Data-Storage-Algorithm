@@ -3,24 +3,40 @@ import java.util.ArrayList;
 public class NoeudsSysteme {
 
     private final int idN;
-    private static int idNoeuds;
+    private static int idNoeuds = 0;
     private int capaMemoire;
     private ArrayList<Donnees> donnesStockees = new ArrayList<>();
     private ArrayList<NoeudsSysteme> noeudsAccessibles = new ArrayList<>();
     private ArrayList<Utilisateurs> utilisateursAccessibles = new ArrayList<>();
+    static Matrice matrice;
 
     // Constructor
+    /**
+     * On créé un noeud. Si c'est le premier créé, on initialise la matrice d'ajacence avec ce noeud.
+     *
+     */
     public NoeudsSysteme(int capaMemoire, ArrayList<Donnees> donnesStockees, ArrayList<NoeudsSysteme> noeudsAccessibles, ArrayList<Utilisateurs> utilisateursAccessibles) {
         this.capaMemoire = capaMemoire;
         this.donnesStockees = donnesStockees;
         this.noeudsAccessibles = noeudsAccessibles;
         this.utilisateursAccessibles = utilisateursAccessibles;
         this.idN = idNoeuds;
+        if (idNoeuds == 0) {
+            matrice = new Matrice();
+        }
+        matrice.updateMatrice();
         idNoeuds++;
     }
+
+
     public NoeudsSysteme(int capaMemoire) {
         this.capaMemoire = capaMemoire;
         this.idN = idNoeuds;
+
+        if (idNoeuds == 0) {
+            matrice = new Matrice();
+        }
+        matrice.updateMatrice();
         idNoeuds++;
     }
 
@@ -56,9 +72,10 @@ public class NoeudsSysteme {
             this.setCapaMemoire(this.getCapaMemoire() - donnees.getTaille());
         }
     }
-    public void ajoutNoeudAccessible(NoeudsSysteme noeud){
+    public void ajoutNoeudAccessible(NoeudsSysteme noeud, int poid){
         this.noeudsAccessibles.add(noeud);
         noeud.noeudsAccessibles.add(this);
+        matrice.ajoutArc(this,noeud,poid);
     }
     public void ajoutUtilisateurAccessible(Utilisateurs user){
         this.utilisateursAccessibles.add(user);
@@ -73,11 +90,11 @@ public class NoeudsSysteme {
 
     @Override
     public String toString() {
-        ArrayList<Integer> nAcces = new ArrayList<Integer>();
+        ArrayList<Integer> nAcces = new ArrayList<>();
         for (NoeudsSysteme noeud : noeudsAccessibles){
             nAcces.add(noeud.getIdN());
         }
-        ArrayList<Integer> uAcces = new ArrayList<Integer>();
+        ArrayList<Integer> uAcces = new ArrayList<>();
         for (Utilisateurs user : utilisateursAccessibles){
             uAcces.add(user.getIdU());
         }

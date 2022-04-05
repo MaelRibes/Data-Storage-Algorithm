@@ -5,24 +5,34 @@ public class Main {
         Donnees data_3 = new Donnees(200);
         Donnees data_4 = new Donnees(200);
 
-        NoeudsSysteme node_1 = new NoeudsSysteme(400);
-        NoeudsSysteme node_2 = new NoeudsSysteme(500);
+        NoeudsSysteme node_0 = new NoeudsSysteme(400);
+        NoeudsSysteme node_1 = new NoeudsSysteme(500);
+        NoeudsSysteme node_2 = new NoeudsSysteme(400);
 
-        node_1.ajoutDonneesStockage(data_1);
-        node_2.ajoutDonneesStockage(data_2);
-        node_1.ajoutNoeudAccessible(node_2);
 
 
         Utilisateurs user_1 = new Utilisateurs(node_1);
+
+
+
+        node_0.ajoutDonneesStockage(data_1);
+        node_1.ajoutDonneesStockage(data_2);
+        node_0.ajoutNoeudAccessible(node_1,6);
+        node_0.ajoutNoeudAccessible(node_2,4);
+
+
         user_1.ajoutDonneesInteret(data_3);
         user_1.ajoutDonneesInteret(data_4);
-        node_1.ajoutUtilisateurAccessible(user_1);
+        node_0.ajoutUtilisateurAccessible(user_1);
 
-        System.out.println(node_1);
+
 
         user_1.ajoutDonneesInteretToStockage();
-        System.out.println(node_1);
-        System.out.println(node_2);
+
+        System.out.println(Matrice.getMatriceAdjacence());
+        int p = NoeudsSysteme.matrice.getPoid(node_1,node_0);
+
+
 
     }
 }
