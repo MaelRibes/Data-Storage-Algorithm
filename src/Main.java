@@ -13,8 +13,6 @@ public class Main {
         node_1.ajoutNoeudAccessible(node_2);
 
 
-
-
         Utilisateurs user_1 = new Utilisateurs(node_1);
         user_1.ajoutDonneesInteret(data_3);
         user_1.ajoutDonneesInteret(data_4);
