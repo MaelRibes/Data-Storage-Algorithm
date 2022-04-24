@@ -45,33 +45,23 @@ public class Utilisateurs {
                 '}';
     }
 
-    public NoeudsSysteme meilleurEmplacement(@NotNull Donnees donnees){
-        if (noeudAccessible.getCapaMemoire() > donnees.getTaille()){
-            System.out.println("Le meilleur emplacement de la donnée " + donnees.getIdD() +" est le noeud " + noeudAccessible.getIdN());
-            return noeudAccessible;
-        }
-        else {
-            for (NoeudsSysteme noeud : noeudAccessible.getNoeudsAccessibles()) {
-                if (noeud.getCapaMemoire() > donnees.getTaille()) {
-                    System.out.println("Le meilleur emplacement de la donnée " + donnees.getIdD() + " est le noeud " + noeud.getIdN());
-                    return noeud;
-                }
-            }
-        }
-        return null;
-    }
 
     public void ajoutDonneesInteretToStockage(){
+        NoeudsSysteme meilleurEmplacement;
         for (Donnees donnees : donnesInteret){
-            NoeudsSysteme meilleurEmplacement;
-            meilleurEmplacement = this.meilleurEmplacement(donnees);
-            meilleurEmplacement.ajoutDonneesStockage(donnees);
+            meilleurEmplacement = Donnees.meilleurEmplacement(donnees,this.getNoeudAccessible().dijkstra());
+            if (meilleurEmplacement != null){
+                meilleurEmplacement.ajoutDonneesStockage(donnees);
+                System.out.println("Donnée n°" + donnees.getIdD() + " placée dans le noeud n°" + meilleurEmplacement.getIdN());
+            }
         }
     }
 
     public void ajoutDonneesInteret(Donnees donnees){
         this.donnesInteret.add(donnees);
+        donnees.getUtilisateursInteret().add(this);
     }
+
 
 
 

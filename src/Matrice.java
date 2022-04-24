@@ -8,7 +8,8 @@ public class Matrice {
     /**
      * Cette méthode est appelée dans les constructeurs de la classe NoeudsSysteme
      * et permet de mettre à jour la taille de la matrice et de l'initialiser avec des 0
-     */
+     **/
+
     public void updateMatrice(){
         int n = NoeudsSysteme.getIdNoeuds()+1;
 
