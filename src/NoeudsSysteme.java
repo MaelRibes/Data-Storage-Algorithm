@@ -9,7 +9,7 @@ public class NoeudsSysteme {
     private ArrayList<Donnees> donnesStockees = new ArrayList<>();
     private ArrayList<NoeudsSysteme> noeudsAccessibles = new ArrayList<>();
     private ArrayList<Utilisateurs> utilisateursAccessibles = new ArrayList<>();
-    static Matrice matrice;
+    private static Matrice matrice;
     private static ArrayList<NoeudsSysteme> listNoeuds = new ArrayList<>();
 
     // Constructor
@@ -17,21 +17,6 @@ public class NoeudsSysteme {
      * On créé un noeud. Si c'est le premier créé, on initialise la matrice d'ajacence avec ce noeud.
      *
      */
-    public NoeudsSysteme(int capaMemoire, ArrayList<Donnees> donnesStockees, ArrayList<NoeudsSysteme> noeudsAccessibles, ArrayList<Utilisateurs> utilisateursAccessibles) {
-        this.capaMemoire = capaMemoire;
-        this.donnesStockees = donnesStockees;
-        this.noeudsAccessibles = noeudsAccessibles;
-        this.utilisateursAccessibles = utilisateursAccessibles;
-        this.idN = idNoeuds;
-        if (idNoeuds == 0) {
-            matrice = new Matrice();
-        }
-        matrice.updateMatrice();
-        listNoeuds.add(this);
-        idNoeuds++;
-    }
-
-
     public NoeudsSysteme(int capaMemoire) {
         this.capaMemoire = capaMemoire;
         this.idN = idNoeuds;
@@ -77,6 +62,7 @@ public class NoeudsSysteme {
         if (this.getCapaMemoire() >= donnees.getTaille()){
             this.getDonnesStockees().add(donnees);
             this.setCapaMemoire(this.getCapaMemoire() - donnees.getTaille());
+            System.out.println("Donnée n°" + donnees.getIdD() + " placée dans le noeud n°" + this.getIdN());
         }
     }
     public void ajoutNoeudAccessible(NoeudsSysteme noeud, int poid){
@@ -86,13 +72,6 @@ public class NoeudsSysteme {
     }
     public void ajoutUtilisateurAccessible(Utilisateurs user){
         this.utilisateursAccessibles.add(user);
-    }
-    public void retraitNoeudAccessible(NoeudsSysteme noeud){
-        this.noeudsAccessibles.remove(noeud);
-        noeud.noeudsAccessibles.remove(this);
-    }
-    public void retraitUtilisateurAccessible(Utilisateurs user){
-        this.utilisateursAccessibles.remove(user);
     }
 
     static int plusCourt(double[] T, ArrayList<Integer> I){
@@ -143,6 +122,38 @@ public class NoeudsSysteme {
         }
         return dist;
 
+    }
+
+    /***
+     * Méthode qui cherche le noeud où il restera le moins de capacité mémoire après le placement de la donnée
+     * @param donnees : donnée à placer
+     * @return Noeuds_systeme
+     */
+    public static NoeudsSysteme plusPetitEcart(Donnees donnees){
+        NoeudsSysteme node = null;
+        int ecart = Integer.MAX_VALUE;
+        int gap;
+        for( NoeudsSysteme noeudsSysteme : NoeudsSysteme.getListNoeuds()){
+            gap = noeudsSysteme.getCapaMemoire() - donnees.getTaille();
+            if(gap < ecart && gap >= 0){
+                node = noeudsSysteme;
+                ecart = gap;
+            }
+        };
+        return node;
+    }
+
+    /***
+     * Cette méthode cherche à placer les données non pas en essayant de la placer au plus proche de l'utilisateur
+     * mais en essayant d'optimiser l'espace de stockage. Elle place les plus grandes données d'abord dans le noeuds le plus petit possible.
+     */
+    public static void mkpProblem(){
+        Donnees.decreasingSort();
+        for( Donnees donnees  : Donnees.getListDonnees()){
+            System.out.println(donnees);
+            System.out.println(NoeudsSysteme.plusPetitEcart(donnees));
+            NoeudsSysteme.plusPetitEcart(donnees).ajoutDonneesStockage(donnees);
+        };
     }
 
 

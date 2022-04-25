@@ -10,16 +10,11 @@ public class Utilisateurs {
     private NoeudsSysteme noeudAccessible;
 
     // Constructor
-    public Utilisateurs(ArrayList<Donnees> donnesInteret, NoeudsSysteme noeudAccessible) {
-        this.donnesInteret = donnesInteret;
+    public Utilisateurs(@NotNull NoeudsSysteme noeudAccessible) {
         this.noeudAccessible = noeudAccessible;
         this.idU = idUtilisateurs;
         idUtilisateurs++;
-    }
-    public Utilisateurs(NoeudsSysteme noeudAccessible) {
-        this.noeudAccessible = noeudAccessible;
-        this.idU = idUtilisateurs;
-        idUtilisateurs++;
+        noeudAccessible.ajoutUtilisateurAccessible(this);
     }
 
     // Getter

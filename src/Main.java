@@ -39,8 +39,9 @@ public class Main {
         //System.out.println(Arrays.toString(node_3.dijkstra()));
         //System.out.println(data_0.getUtilisateursInteret());
 
-        Donnees.placerToutesDonnees();
+        //Donnees.placerToutesDonnees();
 
+        NoeudsSysteme.mkpProblem();
 
 
 

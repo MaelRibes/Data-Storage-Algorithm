@@ -23,36 +23,17 @@ public class Donnees {
     public int getIdD() {
         return idD;
     }
-
     public int getTaille() {
         return taille;
     }
-
     public static int getIdDonnes() { // Return the number of data created
         return idDonnes;
     }
-
     public ArrayList<Utilisateurs> getUtilisateursInteret() {
         return utilisateursInteret;
     }
-
-    @Override
-    public String toString() {
-        return "Donnees{" +
-                "idD=" + idD +
-                ", taille=" + taille +
-                '}';
-    }
-
-    public ArrayList<NoeudsSysteme> getListNoeudsPotentiels() {
-        ArrayList<NoeudsSysteme> noeudsPotentiels = new ArrayList<>();
-        ArrayList<NoeudsSysteme> allNoeuds = NoeudsSysteme.getListNoeuds();
-        for (NoeudsSysteme n : allNoeuds) {
-            if (n.getCapaMemoire() >= this.getTaille()) {
-                noeudsPotentiels.add(n);
-            }
-        }
-        return noeudsPotentiels;
+    public static ArrayList<Donnees> getListDonnees() {
+        return listDonnees;
     }
 
     public static NoeudsSysteme meilleurEmplacement(@NotNull Donnees donnees, double[] distances) {
@@ -119,10 +100,46 @@ public class Donnees {
             meilleurEmplacement = meilleurEmplacement(donnees,tabDist);
             if (meilleurEmplacement != null) {
                 meilleurEmplacement.ajoutDonneesStockage(donnees);
-                System.out.println("Donnée n°" + donnees.getIdD() + " placée dans le noeud n°" + meilleurEmplacement.getIdN());
             }
 
         }
+    }
+
+    /***
+     * Méthode triant la liste des données par ordre decroissant de taille.
+     */
+    public static void decreasingSort(){
+        Donnees data1 = null;
+        Donnees data2 = null;
+        for(int j = 0 ; j < Donnees.getIdDonnes();j++){
+            for(int i = 0 ; i < Donnees.getIdDonnes()-1;i++){
+                if(Donnees.listDonnees.get(i).getTaille() < Donnees.listDonnees.get(i + 1).getTaille()){
+                    data1 = Donnees.listDonnees.get(i);
+                    data2 = Donnees.listDonnees.get(i+1);
+                    Donnees.listDonnees.set(i,data2);
+                    Donnees.listDonnees.set(i+1,data1);
+                }
+            };
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Donnees{" +
+                "idD=" + idD +
+                ", taille=" + taille +
+                '}';
+    }
+
+    public ArrayList<NoeudsSysteme> getListNoeudsPotentiels() {
+        ArrayList<NoeudsSysteme> noeudsPotentiels = new ArrayList<>();
+        ArrayList<NoeudsSysteme> allNoeuds = NoeudsSysteme.getListNoeuds();
+        for (NoeudsSysteme n : allNoeuds) {
+            if (n.getCapaMemoire() >= this.getTaille()) {
+                noeudsPotentiels.add(n);
+            }
+        }
+        return noeudsPotentiels;
     }
 
 }
