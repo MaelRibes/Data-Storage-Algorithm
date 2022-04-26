@@ -45,22 +45,32 @@ public class Main {
         user_6.ajoutDonneesInteret(data_7);
 
         // Création des arcs entre les nœuds
-        node_0.ajoutNoeudAccessible(node_1,2);
-        node_0.ajoutNoeudAccessible(node_2,4);
-        node_0.ajoutNoeudAccessible(node_3,2);
-        node_0.ajoutNoeudAccessible(node_4,4);
+        node_0.ajoutNoeudAccessible(node_1, 2);
+        node_0.ajoutNoeudAccessible(node_2, 4);
+        node_0.ajoutNoeudAccessible(node_3, 2);
+        node_0.ajoutNoeudAccessible(node_4, 4);
 
-        node_1.ajoutNoeudAccessible(node_2,1);
-        node_1.ajoutNoeudAccessible(node_3,3);
-        node_1.ajoutNoeudAccessible(node_4,3);
+        node_1.ajoutNoeudAccessible(node_2, 1);
+        node_1.ajoutNoeudAccessible(node_3, 3);
+        node_1.ajoutNoeudAccessible(node_4, 3);
 
-        node_2.ajoutNoeudAccessible(node_3,2);
-        node_2.ajoutNoeudAccessible(node_4,3);
+        node_2.ajoutNoeudAccessible(node_3, 2);
+        node_2.ajoutNoeudAccessible(node_4, 3);
 
-        node_3.ajoutNoeudAccessible(node_4,1);
+        node_3.ajoutNoeudAccessible(node_4, 1);
 
+        // Test :
+
+        //Question1();
+
+        //Question2_3();
+
+        //Question4();
+
+    }
+
+    public static void Question1(){
         /* Question 1 : Vérification du fonctionnement de la structure de données */
-        /*
         System.out.println("Matrice d'adjacence du système :");
         System.out.println(Matrice.getMatriceAdjacence() + "\n");
         System.out.println("Utilisateurs :");
@@ -71,33 +81,32 @@ public class Main {
         for(NoeudsSysteme node : NoeudsSysteme.getListNoeuds()){
             System.out.println(node);
         }
-        */
+    }
 
-
+    public static void Question2_3() {
         /* Question 2 & 3 : Vérification de l'ajout des données au plus proche des utilisateurs
          * On remarque que cette technique de placement ne permet pas de placer efficacement les données.
-         * Les données 6 et 7 devraient avoir la place n'être stockées
+         * Les données 6 et 7 devraient avoir la place d'être stockées
          */
-        /*
-        Donnees.triDecroissant(); // Si on rajoute un tri des données avant le placement, celui-ci devient deja plus efficace
+        //Donnees.triDecroissant(); // Si on rajoute un tri des données avant le placement, celui-ci devient deja plus efficace
         Donnees.placerToutesDonnees();
         System.out.println("\n Noeuds :");
         for(NoeudsSysteme node : NoeudsSysteme.getListNoeuds()){
             System.out.println(node);
         }
-        */
+    }
 
+    public static void Question4() {
         /* Question 4 : Vérification de l'ajout des données de manière efficace
          * On remarque que cette technique de placement permet de maximiser l'espace occupé dans le système.
          * Les données 0 et 1 ne rentrent pas car le système ne contient pas assez d'espace de stockage.
          * Problème ne vient pas de la méthode de stockage, mais du système lui-même.
          */
-        /*
         Donnees.mkpProblem();
         System.out.println("\n Noeuds :");
         for(NoeudsSysteme node : NoeudsSysteme.getListNoeuds()){
             System.out.println(node);
         }
-         */
+
     }
 }
