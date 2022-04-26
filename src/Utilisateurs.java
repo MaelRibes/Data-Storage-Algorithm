@@ -6,8 +6,9 @@ public class Utilisateurs {
 
     private final int idU;
     private static int idUtilisateurs;
-    private ArrayList<Donnees> donnesInteret = new ArrayList<>();
-    private NoeudsSysteme noeudAccessible;
+    private final ArrayList<Donnees> donnesInteret = new ArrayList<>();
+    private final NoeudsSysteme noeudAccessible;
+    private static final ArrayList<Utilisateurs> listUtilisateurs = new ArrayList<>();
 
     // Constructor
     public Utilisateurs(@NotNull NoeudsSysteme noeudAccessible) {
@@ -15,6 +16,7 @@ public class Utilisateurs {
         this.idU = idUtilisateurs;
         idUtilisateurs++;
         noeudAccessible.ajoutUtilisateurAccessible(this);
+        listUtilisateurs.add(this);
     }
 
     // Getter
@@ -30,15 +32,11 @@ public class Utilisateurs {
     public NoeudsSysteme getNoeudAccessible() {
         return noeudAccessible;
     }
-
-    @Override
-    public String toString() {
-        return "Utilisateurs{" +
-                "idU=" + idU +
-                ", donnesInteret=" + donnesInteret +
-                ", noeudAccessible=" + noeudAccessible.getIdN() +
-                '}';
+    public static ArrayList<Utilisateurs> getListUtilisateurs() {
+        return listUtilisateurs;
     }
+
+
 
 
     public void ajoutDonneesInteretToStockage(){
@@ -57,6 +55,19 @@ public class Utilisateurs {
         donnees.getUtilisateursInteret().add(this);
     }
 
+
+    @Override
+    public String toString() {
+        ArrayList<Integer> dInteret = new ArrayList<>();
+        for (Donnees donnee : donnesInteret){
+            dInteret.add(donnee.getIdD());
+        }
+        return "Utilisateurs{" +
+                "idU=" + idU +
+                ", donnesInteret=" + dInteret +
+                ", noeudAccessible=" + noeudAccessible.getIdN() +
+                '}';
+    }
 
 
 

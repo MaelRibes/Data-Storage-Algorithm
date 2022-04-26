@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Matrice {
 
 
-    private static ArrayList<ArrayList<Integer>> matriceAdjacence = new ArrayList<>();
+    private static final ArrayList<ArrayList<Integer>> matriceAdjacence = new ArrayList<>();
 
     /**
      * Cette méthode est appelée dans le constructeur de la classe NoeudsSysteme

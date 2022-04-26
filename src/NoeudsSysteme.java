@@ -6,15 +6,15 @@ public class NoeudsSysteme {
     private final int idN;
     private static int idNoeuds = 0;
     private int capaMemoire;
-    private ArrayList<Donnees> donnesStockees = new ArrayList<>();
-    private ArrayList<NoeudsSysteme> noeudsAccessibles = new ArrayList<>();
-    private ArrayList<Utilisateurs> utilisateursAccessibles = new ArrayList<>();
+    private final ArrayList<Donnees> donnesStockees = new ArrayList<>();
+    private final ArrayList<NoeudsSysteme> noeudsAccessibles = new ArrayList<>();
+    private final ArrayList<Utilisateurs> utilisateursAccessibles = new ArrayList<>();
     private static Matrice matrice;
-    private static ArrayList<NoeudsSysteme> listNoeuds = new ArrayList<>();
+    private static final ArrayList<NoeudsSysteme> listNoeuds = new ArrayList<>();
 
     // Constructor
     /**
-     * On créé un noeud. Si c'est le premier créé, on initialise la matrice d'ajacence avec ce noeud.
+     * On crée un nœud. Si c'est le premier créé, on initialise la matrice d'adjacence avec ce nœud.
      *
      */
     public NoeudsSysteme(int capaMemoire) {
@@ -74,27 +74,32 @@ public class NoeudsSysteme {
         this.utilisateursAccessibles.add(user);
     }
 
+
+    /*** Cette méthode recherche dans un tableau T l'indice de la valeur qui
+    a la valeur minimale parmi une liste I d'indice. */
     static int plusCourt(double[] T, ArrayList<Integer> I){
-        double minimum = Double.POSITIVE_INFINITY;
+        double minimum = Double.POSITIVE_INFINITY; // On initialise le minimum à l'infini
         int indice = 0;
-        for(int i : I){
-            if((T[i] < minimum) && T[i] >= 0){
-                indice = i;
+        for(int i : I){ // Pour chaque indice dans I,
+            if((T[i] < minimum) && T[i] >= 0){ // Si la valeur d'indice i dans T
+                indice = i;                    // est inférieure au minimum et positive
                 minimum = T[i];
             }
-
         }
         return indice;
     }
 
-    /* Cette méthode retourne un tableau contenant les distances minimales à chaque noeuds du système.
-       L'indice des noeuds dans le tableau correspondant à leur id.
-     */
+
+    /* Cette méthode retourne un tableau contenant les distances minimales à chaque nœud du système.
+       L'indice des nœuds dans le tableau correspondant à leur id. */
     public double[] dijkstra(){
+        // Initialisation des variables :
         int id = this.getIdN();
         double inf = Double.POSITIVE_INFINITY;
         ArrayList<ArrayList<Integer>> matAdj = Matrice.getMatriceAdjacence();
         int n = matAdj.size();
+
+        // Création du tableau de distance et initialisation de celui-ci à avec l'infini
         double[] dist = new double[n];
         for(int i=0 ; i<n ; i++){
             if(i == id){
@@ -104,56 +109,27 @@ public class NoeudsSysteme {
                 dist[i] = inf;
             }
         }
+        // Création de la liste des nœuds non marqués et remplissage avec les id de tous les nœuds
         ArrayList<Integer> nonMarques = new ArrayList<>();
         for(int i=0 ; i<n ; i++) {
             nonMarques.add(i);
         }
+        // Création de la liste de nœuds marqués. Vide au début
         ArrayList<Integer> marques = new ArrayList<>();
 
-        while(marques.size() < n){
-            int i = plusCourt(dist,nonMarques);
-            marques.add(i);
-            nonMarques.remove(Integer.valueOf(i));
-            for(int k : nonMarques) {
+        // Dijkstra :
+        while(marques.size() < n){ // Tant que tous les nœuds ne sont pas marqués
+            int i = plusCourt(dist,nonMarques); // i prend la valeur de l'id du nœud le plus proche non marqué
+            marques.add(i); // On marque i
+            nonMarques.remove(Integer.valueOf(i)); // et on le retire des non marqués.
+            for(int k : nonMarques) { // Pour chaque nœud non marqué,
+                // si la distance de i + le poids de l'arc i-k est inférieur à la distance de k,
                 if ((dist[i] + matAdj.get(i).get(k)) < dist[k]){
-                    dist[k] = dist[i] + matAdj.get(i).get(k);
+                    dist[k] = dist[i] + matAdj.get(i).get(k); // k = distance de i + le poids de l'arc i-k
                 }
             }
         }
         return dist;
-
-    }
-
-    /***
-     * Méthode qui cherche le noeud où il restera le moins de capacité mémoire après le placement de la donnée
-     * @param donnees : donnée à placer
-     * @return Noeuds_systeme
-     */
-    public static NoeudsSysteme plusPetitEcart(Donnees donnees){
-        NoeudsSysteme node = null;
-        int ecart = Integer.MAX_VALUE;
-        int gap;
-        for( NoeudsSysteme noeudsSysteme : NoeudsSysteme.getListNoeuds()){
-            gap = noeudsSysteme.getCapaMemoire() - donnees.getTaille();
-            if(gap < ecart && gap >= 0){
-                node = noeudsSysteme;
-                ecart = gap;
-            }
-        };
-        return node;
-    }
-
-    /***
-     * Cette méthode cherche à placer les données non pas en essayant de la placer au plus proche de l'utilisateur
-     * mais en essayant d'optimiser l'espace de stockage. Elle place les plus grandes données d'abord dans le noeuds le plus petit possible.
-     */
-    public static void mkpProblem(){
-        Donnees.decreasingSort();
-        for( Donnees donnees  : Donnees.getListDonnees()){
-            System.out.println(donnees);
-            System.out.println(NoeudsSysteme.plusPetitEcart(donnees));
-            NoeudsSysteme.plusPetitEcart(donnees).ajoutDonneesStockage(donnees);
-        };
     }
 
 
@@ -167,10 +143,14 @@ public class NoeudsSysteme {
         for (Utilisateurs user : utilisateursAccessibles){
             uAcces.add(user.getIdU());
         }
+        ArrayList<Integer> dAcces = new ArrayList<>();
+        for (Donnees donnee : donnesStockees){
+            dAcces.add(donnee.getIdD());
+        }
         return "NoeudsSysteme{" +
                 "idN=" + idN +
                 ", capaMemoire=" + capaMemoire +
-                ", donnesStockees=" + donnesStockees +
+                ", donnesStockees=" + dAcces +
                 ", noeudsAccessibles=" + nAcces +
                 ", utilisateursAccessibles=" + uAcces +
                 '}';
